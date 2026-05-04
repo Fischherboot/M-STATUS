@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M-STATUS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <meta name="theme-color" content="#0a0a10">
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <main class="status-page">
+        <header class="status-header">
+            <div class="logo">
+                <span class="logo-m">M-</span><span class="gradient-text">STATUS</span>
+            </div>
+            <div class="subtitle" id="brand-subtitle">{{ branding.page_subtitle }}</div>
+        </header>
+
+        <div id="warning-banner-slot"></div>
+
+        <div id="overall-banner" class="overall-banner green">
+            <span class="pulse-dot"></span>
+            <span class="label">Lade Status…</span>
+            <span class="meta" id="generated-at"></span>
+        </div>
+
+        <section id="services-section">
+            <div class="section-header">
+                <h2>Services</h2>
+                <span class="meta" id="services-count"></span>
+            </div>
+            <div id="services-content">
+                <div class="empty-state"><p>Lade…</p></div>
+            </div>
+        </section>
+
+        <section id="devices-section">
+            <div class="section-header">
+                <h2>Geräte</h2>
+                <span class="meta" id="devices-count"></span>
+            </div>
+            <div id="devices-content">
+                <div class="empty-state"><p>Lade…</p></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <span class="logo-m">M-</span><span class="gradient-text">STATUS</span>
+        <span class="sep">|</span>
+        <a href="https://343.im/MSTATUS" target="_blank" rel="noopener">343.im/MSTATUS</a>
+        <span class="sep">|</span>
+        <span id="brand-owner">{{ branding.footer_owner }}</span>
+        <a href="/manage" class="manage-link" id="brand-manage">{{ branding.manage_label }}</a>
+    </footer>
+
+    <script src="/static/bg.js"></script>
+    <script src="/static/public.js"></script>
+</body>
+</html>

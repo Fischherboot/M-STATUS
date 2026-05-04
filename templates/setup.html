@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup · M-STATUS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="setup-shell">
+        <div class="setup-card glass-strong">
+            <div class="panel-head">
+                <div class="traffic-lights"><span></span><span></span><span></span></div>
+                <div class="panel-filename">setup.mstatus</div>
+                <div style="width: 36px"></div>
+            </div>
+
+            <div class="setup-head">
+                <div class="setup-logo"><span class="logo-m">M-</span><span class="gradient-text">STATUS</span></div>
+                <div class="setup-tagline">Erstkonfiguration</div>
+            </div>
+
+            <div class="setup-body">
+                <div class="step-indicator">
+                    <div class="step-dot active" data-step="1"></div>
+                    <div class="step-dot"        data-step="2"></div>
+                    <div class="step-dot"        data-step="3"></div>
+                </div>
+
+                <!-- ── STEP 1: overseer ─────────────────────────────────── -->
+                <div class="step-section" data-step="1">
+                    <h2 class="step-title">Mit dem Overseer verbinden</h2>
+                    <p class="step-desc">
+                        IP/Host und Port deines M-OBSERVE Overseers. Den
+                        API-Key findest du dort unter <em>Einstellungen → API-Key</em>.
+                        Wenn du keinen Overseer benutzt, lass die Felder leer und
+                        klick einfach weiter — Services kannst du trotzdem tracken.
+                    </p>
+
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 2;">
+                            <label class="form-label" for="overseer-host">Host / IP</label>
+                            <input class="form-input" id="overseer-host" type="text"
+                                   placeholder="192.168.1.170" autocomplete="off"
+                                   style="font-family: 'JetBrains Mono', monospace;">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label class="form-label" for="overseer-port">Port</label>
+                            <input class="form-input" id="overseer-port" type="number"
+                                   placeholder="3501" min="1" max="65535"
+                                   style="font-family: 'JetBrains Mono', monospace;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="api-key">API-Key</label>
+                        <input class="form-input" id="api-key" type="text"
+                               placeholder="observe-..." autocomplete="off"
+                               style="font-family: 'JetBrains Mono', monospace;">
+                    </div>
+
+                    <button class="btn btn-outline btn-block" id="test-btn">
+                        Verbindung testen
+                    </button>
+                    <div class="error-msg"   id="test-error"></div>
+                    <div class="success-msg" id="test-success"></div>
+
+                    <div class="step-buttons">
+                        <button class="btn btn-ghost" id="skip-overseer">Überspringen</button>
+                        <button class="btn btn-gradient" id="next-1" disabled>Weiter</button>
+                    </div>
+                </div>
+
+                <!-- ── STEP 2: admin ────────────────────────────────────── -->
+                <div class="step-section" data-step="2" style="display:none;">
+                    <h2 class="step-title">Admin-Account erstellen</h2>
+                    <p class="step-desc">
+                        Damit kannst du dich später unten auf der Status-Seite über
+                        den <em>{{ branding.manage_label }}</em>-Link einloggen, um
+                        Geräte/Services zu verwalten.
+                    </p>
+
+                    <div class="form-group">
+                        <label class="form-label" for="admin-user">Benutzername</label>
+                        <input class="form-input" id="admin-user" type="text"
+                               placeholder="admin" autocomplete="username">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="admin-pass">Passwort (mind. 8 Zeichen)</label>
+                        <input class="form-input" id="admin-pass" type="password"
+                               placeholder="••••••••" autocomplete="new-password">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="admin-pass2">Passwort bestätigen</label>
+                        <input class="form-input" id="admin-pass2" type="password"
+                               placeholder="••••••••" autocomplete="new-password">
+                    </div>
+
+                    <div class="error-msg" id="admin-error"></div>
+
+                    <div class="step-buttons">
+                        <button class="btn btn-outline" id="back-2">Zurück</button>
+                        <button class="btn btn-gradient" id="next-2">Weiter</button>
+                    </div>
+                </div>
+
+                <!-- ── STEP 3: branding (optional) + finish ─────────────── -->
+                <div class="step-section" data-step="3" style="display:none;">
+                    <h2 class="step-title">Beinahe fertig</h2>
+                    <p class="step-desc">
+                        Untertitel deiner Status-Seite. Kannst du jederzeit unter
+                        <em>Einstellungen</em> ändern. Footer und Titel sind fest
+                        — wenn du die wirklich brauchst, ändere sie laut MSOL v1.1
+                        direkt im HTML.
+                    </p>
+
+                    <div class="form-group">
+                        <label class="form-label" for="page-subtitle">Untertitel</label>
+                        <input class="form-input" id="page-subtitle" type="text"
+                               placeholder="System Status" maxlength="80">
+                    </div>
+
+                    <div class="error-msg" id="finish-error"></div>
+
+                    <div class="step-buttons">
+                        <button class="btn btn-outline" id="back-3">Zurück</button>
+                        <button class="btn btn-gradient" id="finish-btn">Setup abschließen</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/bg.js"></script>
+    <script src="/static/setup.js"></script>
+</body>
+</html>

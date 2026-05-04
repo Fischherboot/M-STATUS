@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login · {{ branding.page_title }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="auth-shell">
+        <div class="auth-card glass-strong">
+            <div class="panel-head">
+                <div class="traffic-lights"><span></span><span></span><span></span></div>
+                <div class="panel-filename">login.mstatus</div>
+                <div style="width: 36px"></div>
+            </div>
+
+            <div class="auth-head">
+                <div class="auth-logo"><span class="logo-m">M-</span><span class="gradient-text">STATUS</span></div>
+                <div class="auth-tagline">Manage</div>
+            </div>
+
+            <form class="auth-body" id="login-form" autocomplete="off">
+                <div class="form-group">
+                    <label class="form-label" for="username">Benutzername</label>
+                    <input class="form-input" id="username" type="text"
+                           autocomplete="username" required autofocus
+                           placeholder="admin">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Passwort</label>
+                    <input class="form-input" id="password" type="password"
+                           autocomplete="current-password" required
+                           placeholder="••••••••">
+                </div>
+
+                <div class="error-msg" id="login-error"></div>
+
+                <button type="submit" class="btn btn-gradient btn-block btn-lg" id="submit-btn">
+                    Anmelden
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                        <polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <a href="/" style="color: var(--c-text-muted);">← Zurück zur Status-Seite</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/bg.js"></script>
+    <script src="/static/login.js"></script>
+</body>
+</html>

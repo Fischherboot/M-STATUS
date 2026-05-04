@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage · M-STATUS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-logo"><span class="logo-m">M-</span><span class="gradient-text">STATUS</span></div>
+                <div class="sidebar-tagline">Manage</div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">Verwaltung</div>
+                <a class="nav-link active overseer-only" data-tab="devices">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    <span>Geräte</span>
+                </a>
+                <a class="nav-link" data-tab="categories">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                    <span>Kategorien</span>
+                </a>
+                <a class="nav-link" data-tab="services">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                    <span>Services</span>
+                </a>
+
+                <div class="nav-section">System</div>
+                <a class="nav-link" data-tab="settings">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                    <span>Einstellungen</span>
+                </a>
+                <a class="nav-link" href="/" target="_blank">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    <span>Status-Seite</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-chip" id="logout-chip" title="Klick zum Abmelden">
+                    <div class="user-avatar">{{ username[0] | upper }}</div>
+                    <div class="user-info">
+                        <div class="user-name">{{ username }}</div>
+                        <div class="user-role">Admin</div>
+                    </div>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:.5">
+                        <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main-content">
+            <!-- ── Devices ──────────────────────────────────────────── -->
+            <section class="tab-section active overseer-only" data-tab="devices">
+                <h1 class="page-title">Geräte</h1>
+                <p class="page-subtitle">
+                    Vom Overseer empfangene Clients. M-STATUS pingt sie selbst alle 5 Min.
+                    Drag & drop, um die Reihenfolge zu ändern.
+                </p>
+
+                <div class="toolbar">
+                    <span class="text-muted" id="devices-summary">—</span>
+                    <span class="spacer"></span>
+                    <button class="btn btn-outline btn-sm" id="sync-overseer-btn" title="Geräte-Inventar jetzt mit dem Overseer synchronisieren">Inventar synchronisieren</button>
+                    <button class="btn btn-outline btn-sm" id="refresh-devices">Aktualisieren</button>
+                </div>
+
+                <div id="devices-table-wrap"></div>
+            </section>
+
+            <!-- ── Categories ───────────────────────────────────────── -->
+            <section class="tab-section" data-tab="categories">
+                <h1 class="page-title">Kategorien</h1>
+                <p class="page-subtitle">
+                    Gruppen für Geräte <em>und</em> Services — z. B. „Server", „LXCs",
+                    „Network", „Public APIs".
+                </p>
+
+                <div class="toolbar">
+                    <button class="btn btn-gradient btn-sm" id="new-category-btn">+ Neue Kategorie</button>
+                </div>
+
+                <div id="categories-table-wrap"></div>
+            </section>
+
+            <!-- ── Services ─────────────────────────────────────────── -->
+            <section class="tab-section" data-tab="services">
+                <h1 class="page-title">Services</h1>
+                <p class="page-subtitle">
+                    Web-Endpoints und lokale Dienste. Lokale Services werden nur
+                    intern (host:port) gepingt — die externe Domain hängt oft an
+                    einem Tunnel und lügt.
+                </p>
+
+                <div class="toolbar">
+                    <button class="btn btn-gradient btn-sm" id="new-service-btn">+ Neuer Service</button>
+                    <span class="spacer"></span>
+                    <button class="btn btn-outline btn-sm" id="check-now-btn">Jetzt prüfen</button>
+                </div>
+
+                <div id="services-table-wrap"></div>
+            </section>
+
+            <!-- ── Settings ─────────────────────────────────────────── -->
+            <section class="tab-section" data-tab="settings">
+                <h1 class="page-title">Einstellungen</h1>
+                <p class="page-subtitle">Overseer-Verbindung, Branding und Admin-Account.</p>
+
+                <div class="settings-section">
+                    <h3>Overseer-Verbindung</h3>
+                    <p class="desc">Status: <span id="overseer-status">—</span></p>
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 2;">
+                            <label class="form-label">Host / IP</label>
+                            <input class="form-input" id="cfg-overseer-host" type="text"
+                                   placeholder="192.168.1.170"
+                                   style="font-family:'JetBrains Mono',monospace;">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label class="form-label">Port</label>
+                            <input class="form-input" id="cfg-overseer-port" type="number"
+                                   placeholder="3501" min="1" max="65535"
+                                   style="font-family:'JetBrains Mono',monospace;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">API-Key</label>
+                        <input class="form-input" id="cfg-api-key" type="password" placeholder="(leer lassen, um nicht zu ändern)">
+                    </div>
+                    <button class="btn btn-gradient btn-sm" id="save-overseer-btn">Speichern + neu verbinden</button>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Branding</h3>
+                    <p class="desc">
+                        Editierbar sind nur Untertitel, Manage-Label und Footer-Owner.
+                        Alle anderen Felder (Titel, Logo, Farben etc.) müssen direkt
+                        in <code>templates/public.html</code> geändert werden.
+                        Das ist allerdings laut MSOL 1.1 auch so erlaubt.
+                    </p>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Untertitel</label>
+                            <input class="form-input" id="cfg-subtitle" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Manage-Label</label>
+                            <input class="form-input" id="cfg-manage-label" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Footer-Owner</label>
+                        <input class="form-input" id="cfg-footer-owner" type="text">
+                    </div>
+                    <button class="btn btn-gradient btn-sm" id="save-branding-btn">Branding speichern</button>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Passwort ändern</h3>
+                    <div class="form-group">
+                        <label class="form-label">Aktuelles Passwort</label>
+                        <input class="form-input" id="pw-current" type="password" autocomplete="current-password">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Neues Passwort</label>
+                            <input class="form-input" id="pw-new" type="password" autocomplete="new-password">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Bestätigen</label>
+                            <input class="form-input" id="pw-new2" type="password" autocomplete="new-password">
+                        </div>
+                    </div>
+                    <button class="btn btn-gradient btn-sm" id="save-pw-btn">Passwort ändern</button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- ── Modals ─────────────────────────────────────────────────────── -->
+    <div class="modal-backdrop" id="device-edit-modal">
+        <div class="modal glass-strong">
+            <div class="modal-head">
+                <div class="traffic-lights"><span></span><span></span><span></span></div>
+                <div class="panel-filename">edit.device</div>
+                <button class="modal-close" data-close>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Anzeigename</label>
+                    <input class="form-input" id="dm-name" type="text">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Kategorie</label>
+                    <select class="form-select" id="dm-category"></select>
+                </div>
+                <label class="form-checkbox">
+                    <input type="checkbox" id="dm-hidden">
+                    Auf der Status-Seite ausblenden
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close>Abbrechen</button>
+                <button class="btn btn-gradient" id="dm-save">Speichern</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="category-modal">
+        <div class="modal glass-strong">
+            <div class="modal-head">
+                <div class="traffic-lights"><span></span><span></span><span></span></div>
+                <div class="panel-filename">edit.category</div>
+                <button class="modal-close" data-close>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input class="form-input" id="cm-name" type="text" placeholder="z. B. Server, LXCs, Network">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Reihenfolge</label>
+                    <input class="form-input" id="cm-order" type="number" value="0">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close>Abbrechen</button>
+                <button class="btn btn-gradient" id="cm-save">Speichern</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="service-modal">
+        <div class="modal glass-strong">
+            <div class="modal-head">
+                <div class="traffic-lights"><span></span><span></span><span></span></div>
+                <div class="panel-filename">edit.service</div>
+                <button class="modal-close" data-close>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Anzeigename</label>
+                    <input class="form-input" id="sm-name" type="text" placeholder="Mein toller Service">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Externe URL</label>
+                    <input class="form-input" id="sm-url" type="text" placeholder="https://example.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Kategorie</label>
+                    <select class="form-select" id="sm-category"></select>
+                </div>
+                <label class="form-checkbox">
+                    <input type="checkbox" id="sm-is-local">
+                    Service ist lokal gehostet
+                </label>
+                <p class="text-muted" style="margin: 6px 0 0 22px; font-size: 13px;">
+                    Lokale Services werden <em>nur intern</em> gepingt — die externe URL
+                    bleibt für die Anzeige, wird aber nicht geprüft (verhindert
+                    falsche grüne Lampen bei Cloudflare-Tunneln).
+                </p>
+                <div class="form-row" id="sm-local-fields" style="display:none; margin-top:14px;">
+                    <div class="form-group">
+                        <label class="form-label">Interne IP / Host</label>
+                        <input class="form-input" id="sm-host" type="text" placeholder="192.168.1.174">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Port</label>
+                        <input class="form-input" id="sm-port" type="number" min="1" max="65535" placeholder="3505">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close>Abbrechen</button>
+                <button class="btn btn-gradient" id="sm-save">Speichern</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="confirm-modal">
+        <div class="modal glass-strong">
+            <div class="modal-head">
+                <div class="traffic-lights"><span></span><span></span><span></span></div>
+                <div class="panel-filename">confirm</div>
+                <button class="modal-close" data-close>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="cf-text" style="line-height:1.5;"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close>Abbrechen</button>
+                <button class="btn btn-danger" id="cf-confirm">Bestätigen</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="/static/bg.js"></script>
+    <script src="/static/manage.js"></script>
+</body>
+</html>
