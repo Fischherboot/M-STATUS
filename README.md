@@ -215,7 +215,7 @@ Bewusst minimal gehalten. Keine Zeitreihen-DB, kein Prometheus, kein Grafana. SQ
 ## Lizenz
 
 <p align="center">
-  <a href="https://343.im/MSOL">Moritzsoft Open License v1.1</a>
+  <a href="https://moritzsoft.de/#license">Moritzsoft Open License v1.1</a>
 </p>
 
 <p align="center">
